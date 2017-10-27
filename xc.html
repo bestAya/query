@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        body,html{
+            /*position: relative;*/
+
+        }
+        ul{
+            width: 940px;
+            height:410px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            align-items: center;
+            margin: 120px auto;
+        }
+        ul>li{
+            width:300px;
+            height: 200px;
+            /*display: flex;*/
+            /*justify-content: center;*/
+            /*align-items: center;*/
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        ul>li>img{
+            display: block;
+            width:300px;
+            height: 200px;
+        }
+        ul>li>img:hover{
+            opacity: 0.6;
+        }
+        .mask{
+            width: 800px;
+            height: 600px;
+            box-shadow: 0 0 0 1000px rgba(0,0,0,0.6);
+            position: absolute;
+            top:0;
+            left:0;
+            right:0;
+            bottom:0;
+            margin: auto;
+            transform: scale(0,0);
+            transition: .5s;
+        }
+        .mask >img{
+            display: block;
+            width: 800px;
+            height:600px;
+        }
+        .active{
+            transform: scale(1,1);
+        }
+        .an{
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            top:-25px;
+            right:-225px;
+            background:url("img/close.png") center/cover;
+            background-size:50px 50px;
+
+        }
+        .btnl{
+            width:60px;
+            height: 60px;
+            position: absolute;
+            top:calc(50% - 30px);
+            left:-200px;
+            background:url("img/left.png") center/cover;
+            background-size:60px 60px;
+        }
+        .btnr{
+            width:60px;
+            height: 60px;
+            position: absolute;
+            top:calc(50% - 30px);
+            right:-200px;
+            background:url("img/right.png") center/cover;
+            background-size:60px 60px;
+        }
+    </style>
+    <script src="../jquery-3.2.1.js"></script>
+</head>
+
+<body>
+    <ul>
+        <li><img src="img/1.jpg" alt=""></li>
+        <li><img src="img/2.jpg" alt=""></li>
+        <li><img src="img/3.jpg" alt=""></li>
+        <li><img src="img/4.jpg" alt=""></li>
+        <li><img src="img/5.jpg" alt=""></li>
+        <li><img src="img/6.jpg" alt=""></li>
+    </ul>
+    <div class="mask" >
+        <img src="img/1.jpg" alt="">
+        <div class="an"></div>
+        <div class="btnl"></div>
+        <div class="btnr"></div>
+    </div>
+</body>
+<script>
+    let li=$('li');
+    let mask=$('.mask');
+    let an=$('.an');
+    let Img=$('img',mask);
+    let btnl=$('.btnl');
+    let btnr=$('.btnr');
+    let num=0;
+    li.on('click',function () {
+        let src=$('img',this).attr('src');
+        num=$(this).index();
+        Img.attr('src',src);
+        mask.addClass('active');
+
+    });
+
+    btnl.click(function () {
+        num--;
+        if(num<0){
+            num=li.length-1;
+        }
+        let src=$('img',li.eq(num)).attr('src');
+        Img.attr('src',src);
+        mask.addClass('active');
+    });
+    btnr.click(function () {
+        num++;
+        if(num>=li.length){
+            num=0
+        }
+        let src=$('img',li.eq(num)).attr('src');
+        Img.attr('src',src);
+        mask.addClass('active');
+    });
+    mask.click(function (e) {
+        $(document).mousedown(false);
+        let ex=e.clientX;
+        if(ex<innerWidth / 2){
+            btnl.trigger('click');
+        }
+        if(ex>innerWidth/2){
+            btnr.trigger('click')
+        }
+    })
+    an.mousedown(function () {
+        mask.removeClass('active');
+    });
+
+</script>
+</html>
